@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Empleado - Biergarten München</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Poppins:wght@300;400;500;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        .panel-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .panel-header {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .panel-header h1 {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        .panel-header p {
+            color: #aaa;
+            margin: 0;
+            font-size: 0.8rem;
+        }
+        .empleado-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            color: white;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+        .stat-card i {
+            font-size: 2rem;
+            color: #c9a84c;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        .stat-card .label {
+            color: #6b6b6b;
+            font-size: 0.85rem;
+        }
+        .ventas-totales {
+            background: linear-gradient(135deg, #c9a84c, #b8933a);
+            color: #1a1a1a;
+        }
+        .ventas-totales .number {
+            color: #1a1a1a;
+            font-size: 2.5rem;
+        }
+        .btn-pdf {
+            background: #c62828;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .btn-pdf:hover {
+            background: #a02020;
+            transform: translateY(-2px);
+        }
+        .mesas-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .mesa-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .mesa-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        .mesa-header {
+            background: #1a1a1a;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .mesa-header.ocupada {
+            background: #c62828;
+        }
+        .mesa-header.disponible {
+            background: #1a1a1a;
+        }
+        .mesa-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        .mesa-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .mesa-status.disponible {
+            background: #2e7d32;
+        }
+        .mesa-status.ocupada {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .mesa-body {
+            padding: 1rem;
+        }
+        .mesa-info {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .mesa-info p {
+            margin: 0;
+            font-size: 0.85rem;
+        }
+        .ticket-container {
+            background: #f9f6f0;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px dashed #c9a84c;
+        }
+        .ticket-items {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .ticket-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.8rem;
+            border-bottom: 1px solid #eee;
+        }
+        .ticket-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 2px solid #c9a84c;
+            font-weight: bold;
+        }
+        .mesa-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .btn-mesa {
+            flex: 1;
+            padding: 0.6rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-agregar {
+            background: #c9a84c;
+            color: #1a1a1a;
+        }
+        .btn-cerrar {
+            background: #c62828;
+            color: white;
+        }
+        .btn-liberar {
+            background: #2e7d32;
+            color: white;
+        }
+        .btn-agregar:hover, .btn-cerrar:hover, .btn-liberar:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 450px;
+            width: 90%;
+        }
+        .modal-content h3 {
+            margin-bottom: 1rem;
+        }
+        .modal-content select,
+        .modal-content input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0 1rem 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .modal-buttons button {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .logout-btn {
+            background: #c62828;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .empty-ticket {
+            text-align: center;
+            color: #999;
+            font-size: 0.8rem;
+            padding: 1rem;
+        }
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 0.5rem;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+        .fecha-actual {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 0.2rem;
+        }
+        
+        /* Estilos para el Reporte Diario PDF */
+        .pdf-container {
+            padding: 2rem;
+            font-family: 'Poppins', sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #c9a84c;
+            padding-bottom: 1rem;
+        }
+        .pdf-header h1 {
+            font-family: 'UnifrakturMaguntia', cursive;
+            font-size: 2rem;
+            color: #1a1a1a;
+        }
+        .pdf-header p {
+            color: #666;
+        }
+        .pdf-resumen {
+            background: #f9f6f0;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        .pdf-resumen h3 {
+            margin: 0 0 0.5rem 0;
+            color: #c9a84c;
+        }
+        .pdf-resumen .total-grande {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #c62828;
+        }
+        .pdf-mesa {
+            margin-bottom: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            page-break-inside: avoid;
+        }
+        .pdf-mesa-header {
+            background: #1a1a1a;
+            color: white;
+            padding: 0.8rem 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .pdf-mesa-header h4 {
+            margin: 0;
+        }
+        .pdf-mesa-body {
+            padding: 0.8rem;
+        }
+        .pdf-items {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .pdf-items th,
+        .pdf-items td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .pdf-items th {
+            background: #f5f5f5;
+        }
+        .pdf-mesa-total {
+            text-align: right;
+            padding: 0.5rem 1rem;
+            background: #f9f6f0;
+            font-weight: bold;
+            border-top: 1px solid #c9a84c;
+        }
+        .pdf-footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #999;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .mesa-card {
+            animation: fadeIn 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="panel-container">
+        <div class="panel-header">
+            <div>
+                <h1><i class="fas fa-user-tie"></i> Panel de Gestión</h1>
+                <p>Biergarten München - Sistema de empleados</p>
+                <div class="fecha-actual" id="fechaActual"></div>
+            </div>
+            <div class="empleado-info">
+                <i class="fas fa-user-circle"></i>
+                <span id="empleadoNombre">Cargando...</span>
+                <button id="logoutBtn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-chair"></i>
+                <div class="number" id="totalMesas">0</div>
+                <div class="label">Total Mesas</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-circle" style="color: #2e7d32; font-size: 1rem;"></i>
+                <div class="number" id="mesasDisponibles">0</div>
+                <div class="label">Mesas Disponibles</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-circle" style="color: #c62828; font-size: 1rem;"></i>
+                <div class="number" id="mesasOcupadas">0</div>
+                <div class="label">Mesas Ocupadas</div>
+            </div>
+            <div class="stat-card ventas-totales">
+                <i class="fas fa-chart-line"></i>
+                <div class="number" id="totalVentas">$0</div>
+                <div class="label">Ventas del día (acumulado)</div>
+                <button id="btnGenerarPDF" class="btn-pdf">
+                    <i class="fas fa-file-pdf"></i> Generar Reporte Diario
+                </button>
+            </div>
+        </div>
+        
+        <h2 style="margin-bottom: 1rem;"><i class="fas fa-utensils"></i> Estado de Mesas</h2>
+        <div id="mesasContainer" class="mesas-panel">
+            <div class="loading">Cargando mesas...</div>
+        </div>
+    </div>
+    
+    <!-- Modal para agregar pedido -->
+    <div id="modalPedido" class="modal">
+        <div class="modal-content">
+            <h3><i class="fas fa-plus-circle"></i> Agregar Pedido</h3>
+            <p>Mesa: <strong id="modalMesaNombre"></strong></p>
+            <div id="modalError" class="error-message" style="display: none;"></div>
+            <label>Seleccionar producto:</label>
+            <select id="productoSelect">
+                <option value="">Cargando productos...</option>
+            </select>
+            <label>Cantidad:</label>
+            <input type="number" id="cantidadProducto" value="1" min="1">
+            <div class="modal-buttons">
+                <button id="confirmarPedido" class="btn-primary" style="background: #c9a84c; color: #1a1a1a;">Agregar</button>
+                <button id="cancelarPedido" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { auth, db } from './js/firebase-config.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { collection, doc, getDoc, getDocs, updateDoc, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        
+        // ============================================
+        // VARIABLES GLOBALES
+        // ============================================
+        let mesas = [];
+        let menuItems = [];
+        let currentMesaId = null;
+        let unsubscribeMesas = null;
+        let menuCargado = false;
+        let totalVentasHoy = 0;
+        let transaccionesDelDia = [];
+        
+        // ============================================
+        // ELEMENTOS DOM
+        // ============================================
+        const mesasContainer = document.getElementById('mesasContainer');
+        const empleadoNombreSpan = document.getElementById('empleadoNombre');
+        const totalMesasSpan = document.getElementById('totalMesas');
+        const mesasDisponiblesSpan = document.getElementById('mesasDisponibles');
+        const mesasOcupadasSpan = document.getElementById('mesasOcupadas');
+        const totalVentasSpan = document.getElementById('totalVentas');
+        const fechaActualSpan = document.getElementById('fechaActual');
+        
+        // Modal
+        const modal = document.getElementById('modalPedido');
+        const modalMesaNombre = document.getElementById('modalMesaNombre');
+        const modalError = document.getElementById('modalError');
+        const productoSelect = document.getElementById('productoSelect');
+        const cantidadInput = document.getElementById('cantidadProducto');
+        
+        // ============================================
+        // FUNCIONES AUXILIARES
+        // ============================================
+        
+        function getFechaActual() {
+            const hoy = new Date();
+            return `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
+        }
+        
+        function getFechaActualFormateada() {
+            const hoy = new Date();
+            return hoy.toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        }
+        
+        function mostrarFecha() {
+            fechaActualSpan.textContent = getFechaActualFormateada();
+        }
+        
+        function extraerPrecioNumerico(precioStr) {
+            if (!precioStr) return 0;
+            if (typeof precioStr === 'number') return precioStr;
+            const match = String(precioStr).match(/\d+/);
+            return match ? parseInt(match[0]) : 0;
+        }
+        
+        // ============================================
+        // GENERAR TICKET PDF - SIMPLE Y ELEGANTE
+        // ============================================
+        async function generarTicketPDF(mesaNombre, pedidos, total, numeroTicket) {
+            const fecha = new Date();
+            const fechaStr = fecha.toLocaleDateString('es-MX');
+            const horaStr = fecha.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const ticketNum = numeroTicket.toString().slice(-6);
+            const empleado = auth.currentUser?.email?.split('@')[0] || 'Empleado';
+            
+            let productosLista = '';
+            pedidos.forEach(pedido => {
+                const cantidad = pedido.cantidad || 1;
+                const productoNombre = pedido.productoNombre;
+                const precioTotal = pedido.total;
+                productosLista += `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>${cantidad}x ${productoNombre}</span>
+                        <span>${precioTotal}</span>
+                    </div>
+                `;
+            });
+            
+            const ticketHTML = `
+                <div style="width: 280px; font-family: monospace; padding: 20px;">
+                    <div style="text-align: center; border-bottom: 1px dashed #999; padding-bottom: 10px; margin-bottom: 10px;">
+                        <div style="font-size: 20px;">🍺</div>
+                        <div style="font-weight: bold; font-size: 16px;">BIERGARTEN MÜNCHEN</div>
+                        <div style="font-size: 10px; color: #666;">Restaurante Alemán</div>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px; font-size: 11px;">
+                        <div style="display: flex; justify-content: space-between;"><span>Mesa:</span><span>${mesaNombre}</span></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Fecha:</span><span>${fechaStr}</span></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Hora:</span><span>${horaStr}</span></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Ticket:</span><span>${ticketNum}</span></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Cajero:</span><span>${empleado}</span></div>
+                    </div>
+                    
+                    <div style="border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; padding: 10px 0; margin-bottom: 10px;">
+                        ${productosLista}
+                    </div>
+                    
+                    <div style="text-align: right; font-weight: bold; font-size: 14px; margin-bottom: 15px;">
+                        TOTAL: ${total}
+                    </div>
+                    
+                    <div style="text-align: center; border-top: 1px dashed #999; padding-top: 10px; font-size: 10px;">
+                        <div>🍺 ¡PROST! 🥨</div>
+                        <div>¡Gracias por su visita!</div>
+                    </div>
+                </div>
+            `;
+            
+            const element = document.createElement('div');
+            element.innerHTML = ticketHTML;
+            document.body.appendChild(element);
+            
+            const options = {
+                margin: [0.3, 0.3, 0.3, 0.3],
+                filename: `ticket_${mesaNombre.replace(/ /g, '_')}_${ticketNum}.pdf`,
+                image: { type: 'jpeg', quality: 0.95 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: [3.2, 'auto'], orientation: 'portrait' }
+            };
+            
+            try {
+                await html2pdf().set(options).from(element).save();
+                document.body.removeChild(element);
+                return true;
+            } catch (error) {
+                console.error("Error:", error);
+                document.body.removeChild(element);
+                return false;
+            }
+        }
+        
+        // ============================================
+        // CONTADOR LOCAL
+        // ============================================
+        function cargarContadorLocal() {
+            const guardado = localStorage.getItem('ventasBiergarten');
+            const transaccionesGuardadas = localStorage.getItem('transaccionesBiergarten');
+            
+            if (guardado) {
+                const data = JSON.parse(guardado);
+                if (data.fecha === getFechaActual()) {
+                    totalVentasHoy = data.total;
+                    totalVentasSpan.textContent = `$${totalVentasHoy.toLocaleString()}`;
+                } else {
+                    reiniciarContadorLocal();
+                }
+            } else {
+                reiniciarContadorLocal();
+            }
+            
+            if (transaccionesGuardadas) {
+                const data = JSON.parse(transaccionesGuardadas);
+                if (data.fecha === getFechaActual()) {
+                    transaccionesDelDia = data.transacciones || [];
+                }
+            }
+        }
+        
+        function reiniciarContadorLocal() {
+            totalVentasHoy = 0;
+            transaccionesDelDia = [];
+            guardarContadorLocal();
+            totalVentasSpan.textContent = "$0";
+        }
+        
+        function guardarContadorLocal() {
+            localStorage.setItem('ventasBiergarten', JSON.stringify({ fecha: getFechaActual(), total: totalVentasHoy }));
+            localStorage.setItem('transaccionesBiergarten', JSON.stringify({ fecha: getFechaActual(), transacciones: transaccionesDelDia }));
+        }
+        
+        function agregarVentaAlContador(mesaNombre, pedidos, total) {
+            totalVentasHoy += total;
+            totalVentasSpan.textContent = `$${totalVentasHoy.toLocaleString()}`;
+            transaccionesDelDia.push({
+                id: Date.now(),
+                mesa: mesaNombre,
+                hora: new Date().toLocaleTimeString(),
+                pedidos: pedidos,
+                total: total,
+                totalFormateado: `$${total}`
+            });
+            guardarContadorLocal();
+        }
+        
+        // ============================================
+        // GENERAR REPORTE DIARIO PDF
+        // ============================================
+        async function generarReporteDiarioPDF() {
+            if (transaccionesDelDia.length === 0 && totalVentasHoy === 0) {
+                if (!confirm("No hay ventas registradas hoy. ¿Deseas generar un PDF en blanco?")) return;
+            }
+            
+            const fechaActual = getFechaActualFormateada();
+            const horaActual = new Date().toLocaleTimeString();
+            const totalVentas = totalVentasHoy;
+            
+            let ventasHtml = '';
+            if (transaccionesDelDia.length === 0) {
+                ventasHtml = '<p style="text-align: center;">No hay ventas registradas en el día</p>';
+            } else {
+                transaccionesDelDia.forEach((venta, index) => {
+                    let productosHtml = '';
+                    venta.pedidos.forEach(pedido => {
+                        productosHtml += `
+                            <tr>
+                                <td>${pedido.cantidad || 1}x ${pedido.productoNombre}</td>
+                                <td style="text-align: right;">${pedido.total}</td>
+                            </tr>
+                        `;
+                    });
+                    ventasHtml += `
+                        <div class="pdf-mesa">
+                            <div class="pdf-mesa-header">
+                                <h4>🍺 Venta #${index + 1} - Mesa ${venta.mesa}</h4>
+                                <span>${venta.hora}</span>
+                            </div>
+                            <div class="pdf-mesa-body">
+                                <table class="pdf-items" style="width:100%; border-collapse: collapse;">
+                                    ${productosHtml}
+                                </table>
+                            </div>
+                            <div class="pdf-mesa-total">TOTAL: ${venta.totalFormateado}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            const pdfContent = `
+                <div class="pdf-container">
+                    <div class="pdf-header">
+                        <h1>🍺 Biergarten München</h1>
+                        <h2>Reporte de Ventas Diario</h2>
+                        <p>${fechaActual}</p>
+                        <p>Generado: ${horaActual}</p>
+                    </div>
+                    <div class="pdf-resumen">
+                        <h3>📊 RESUMEN DEL DÍA</h3>
+                        <p>Total de transacciones: <strong>${transaccionesDelDia.length}</strong></p>
+                        <p>Total de ventas: <span class="total-grande">$${totalVentas.toLocaleString()}</span></p>
+                    </div>
+                    <h3>📋 DETALLE DE VENTAS</h3>
+                    ${ventasHtml}
+                    <div class="pdf-footer">Reporte generado - Biergarten München 🍺 ¡Prost!</div>
+                </div>
+            `;
+            
+            const element = document.createElement('div');
+            element.innerHTML = pdfContent;
+            document.body.appendChild(element);
+            
+            const options = {
+                margin: [0.5, 0.5, 0.5, 0.5],
+                filename: `reporte_diario_${getFechaActual()}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            try {
+                await html2pdf().set(options).from(element).save();
+                document.body.removeChild(element);
+                reiniciarContadorLocal();
+                await addDoc(collection(db, "cierres"), {
+                    fecha: new Date().toISOString(),
+                    fechaStr: getFechaActual(),
+                    totalVentas: `$${totalVentas.toLocaleString()}`,
+                    montoNumerico: totalVentas,
+                    numTransacciones: transaccionesDelDia.length,
+                    empleado: auth.currentUser?.email || 'empleado',
+                    timestamp: new Date().toISOString()
+                });
+                alert(`✅ Reporte generado. Ventas reiniciadas a $0. Total: $${totalVentas.toLocaleString()}`);
+            } catch (error) {
+                console.error("Error:", error);
+                document.body.removeChild(element);
+                alert("Error al generar el reporte");
+            }
+        }
+        
+        // ============================================
+        // CARGAR MENÚ
+        // ============================================
+        async function cargarMenuParaSelect() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "menu"));
+                menuItems = [];
+                querySnapshot.forEach(doc => {
+                    menuItems.push({ id: doc.id, nombre: doc.data().nombre, precio: doc.data().precio });
+                });
+                menuCargado = true;
+                productoSelect.innerHTML = '<option value="">Selecciona un producto</option>';
+                menuItems.forEach(item => {
+                    productoSelect.innerHTML += `<option value="${item.id}">${item.nombre} - ${item.precio}</option>`;
+                });
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+        
+        // ============================================
+        // MOSTRAR MESAS
+        // ============================================
+        function mostrarMesas() {
+            if (!mesasContainer) return;
+            if (!mesas || mesas.length === 0) {
+                mesasContainer.innerHTML = '<div style="text-align: center;">No hay mesas registradas</div>';
+                return;
+            }
+            
+            let disponibles = 0, ocupadas = 0;
+            const html = mesas.map(mesa => {
+                if (mesa.estado === 'disponible') disponibles++;
+                if (mesa.estado === 'ocupada') ocupadas++;
+                
+                const pedidos = mesa.pedidos || [];
+                let totalMesa = 0;
+                pedidos.forEach(p => totalMesa += extraerPrecioNumerico(p.total));
+                
+                const mesaId = mesa.firebaseId || mesa.id;
+                const mesaNombre = mesa.nombre || `Mesa ${mesa.numero}`;
+                let pedidosHtml = pedidos.length === 0 ? '<div class="empty-ticket">Sin pedidos aún</div>' : 
+                    pedidos.map(p => `<div class="ticket-item"><span>${p.cantidad || 1}x ${p.productoNombre}</span><span>${p.total}</span></div>`).join('');
+                
+                return `
+                    <div class="mesa-card">
+                        <div class="mesa-header ${mesa.estado === 'ocupada' ? 'ocupada' : 'disponible'}">
+                            <h3>${mesaNombre}</h3>
+                            <span class="mesa-status ${mesa.estado}">${mesa.estado === 'disponible' ? '🟢 DISPONIBLE' : '🔴 OCUPADA'}</span>
+                        </div>
+                        <div class="mesa-body">
+                            <div class="mesa-info">
+                                <p>Capacidad: ${mesa.capacidad} personas</p>
+                                <p>N° ${mesa.numero}</p>
+                            </div>
+                            <div class="ticket-container">
+                                <div class="ticket-header"><span>TICKET</span><span>${new Date().toLocaleTimeString()}</span></div>
+                                <div class="ticket-items">${pedidosHtml}</div>
+                                ${pedidos.length > 0 ? `<div class="ticket-total"><span>TOTAL</span><span>$${totalMesa}</span></div>` : ''}
+                            </div>
+                            <div class="mesa-actions">
+                                ${mesa.estado === 'ocupada' ? `
+                                    <button class="btn-mesa btn-agregar" onclick="window.abrirModalAgregar('${mesaId}', '${mesaNombre}')">➕ Agregar Pedido</button>
+                                    <button class="btn-mesa btn-cerrar" onclick="window.cerrarCuenta('${mesaId}', '${mesaNombre}', ${totalMesa})">🧾 Cerrar Cuenta</button>
+                                ` : `
+                                    <button class="btn-mesa btn-liberar" onclick="window.ocuparMesa('${mesaId}', '${mesaNombre}')">🪑 Ocupar Mesa</button>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            mesasContainer.innerHTML = html;
+            totalMesasSpan.textContent = mesas.length;
+            mesasDisponiblesSpan.textContent = disponibles;
+            mesasOcupadasSpan.textContent = ocupadas;
+        }
+        
+        // ============================================
+        // ACCIONES GLOBALES
+        // ============================================
+        window.ocuparMesa = async (mesaId, mesaNombre) => {
+            if (confirm(`¿Ocupar ${mesaNombre}?`)) {
+                try {
+                    await updateDoc(doc(db, "tables", mesaId), { estado: 'ocupada', pedidos: [], horaApertura: new Date().toISOString() });
+                } catch (error) { alert("Error: " + error.message); }
+            }
+        };
+        
+        window.abrirModalAgregar = async (mesaId, mesaNombre) => {
+            if (!menuCargado) await cargarMenuParaSelect();
+            currentMesaId = mesaId;
+            modalMesaNombre.textContent = mesaNombre;
+            cantidadInput.value = '1';
+            productoSelect.value = '';
+            modal.classList.add('active');
+        };
+        
+        window.cerrarCuenta = async (mesaId, mesaNombre, total) => {
+            if (confirm(`¿Cerrar cuenta de ${mesaNombre}? Total: $${total}\nSe generará un ticket PDF`)) {
+                try {
+                    const mesaDoc = await getDoc(doc(db, "tables", mesaId));
+                    const pedidos = mesaDoc.data().pedidos || [];
+                    if (pedidos.length === 0 && !confirm("La mesa no tiene pedidos. ¿Cerrar de todas formas?")) return;
+                    
+                    const numeroTicket = Date.now();
+                    await addDoc(collection(db, "ventas"), {
+                        mesa: mesaNombre, total: `$${total}`, montoNumerico: total,
+                        fecha: new Date().toISOString(), fechaStr: getFechaActual(),
+                        empleado: auth.currentUser?.email, pedidos: pedidos, numeroTicket: numeroTicket
+                    });
+                    
+                    await generarTicketPDF(mesaNombre, pedidos, total, numeroTicket);
+                    agregarVentaAlContador(mesaNombre, pedidos, total);
+                    await updateDoc(doc(db, "tables", mesaId), { estado: 'disponible', pedidos: [], horaApertura: null });
+                    alert(`✅ Cuenta cerrada. Total: $${total}\n🎫 Ticket PDF generado`);
+                } catch (error) { alert("Error: " + error.message); }
+            }
+        };
+        
+        // ============================================
+        // CONFIRMAR PEDIDO
+        // ============================================
+        document.getElementById('confirmarPedido')?.addEventListener('click', async () => {
+            const productoId = productoSelect.value;
+            const cantidad = parseInt(cantidadInput.value) || 1;
+            if (!productoId) { alert("Selecciona un producto"); return; }
+            const producto = menuItems.find(p => p.id === productoId);
+            if (!producto) { alert("Producto no encontrado"); return; }
+            
+            const precioNumerico = extraerPrecioNumerico(producto.precio);
+            const total = precioNumerico * cantidad;
+            
+            try {
+                const mesaDoc = await getDoc(doc(db, "tables", currentMesaId));
+                const pedidosActuales = mesaDoc.data().pedidos || [];
+                await updateDoc(doc(db, "tables", currentMesaId), {
+                    pedidos: [...pedidosActuales, {
+                        productoId, productoNombre: producto.nombre, cantidad,
+                        precioUnitario: producto.precio, total: `$${total}`, timestamp: new Date().toISOString()
+                    }]
+                });
+                modal.classList.remove('active');
+                alert(`✅ Agregado: ${cantidad}x ${producto.nombre} - $${total}`);
+            } catch (error) { alert("Error: " + error.message); }
+        });
+        
+        document.getElementById('cancelarPedido')?.addEventListener('click', () => modal.classList.remove('active'));
+        
+        // ============================================
+        // CONFIGURAR LISTENERS
+        // ============================================
+        function configurarMesasTiempoReal() {
+            if (unsubscribeMesas) unsubscribeMesas();
+            unsubscribeMesas = onSnapshot(collection(db, "tables"), (snapshot) => {
+                mesas = [];
+                snapshot.forEach(doc => mesas.push({ firebaseId: doc.id, ...doc.data() }));
+                mesas.sort((a, b) => (a.numero || 0) - (b.numero || 0));
+                mostrarMesas();
+            });
+        }
+        
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) { window.location.href = 'login.html'; return; }
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            const userData = userDoc.data();
+            if (!userData || userData.rol !== 'empleado') {
+                alert("Acceso no autorizado");
+                await signOut(auth);
+                window.location.href = 'login.html';
+                return;
+            }
+            empleadoNombreSpan.textContent = userData.nombre || user.email;
+            mostrarFecha();
+            await cargarMenuParaSelect();
+            cargarContadorLocal();
+            configurarMesasTiempoReal();
+        });
+        
+        document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+            await signOut(auth);
+            window.location.href = 'login.html';
+        });
+        
+        document.getElementById('btnGenerarPDF')?.addEventListener('click', async () => {
+            const btn = document.getElementById('btnGenerarPDF');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+            btn.disabled = true;
+            await generarReporteDiarioPDF();
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
+        
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+        
+        setInterval(() => {
+            const guardado = localStorage.getItem('ventasBiergarten');
+            if (guardado && JSON.parse(guardado).fecha !== getFechaActual()) reiniciarContadorLocal();
+        }, 60000);
+    </script>
+</body>
+</html>

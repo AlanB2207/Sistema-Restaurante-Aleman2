@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Biergarten München</title>
+    <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Poppins:wght@300;400;500;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+   
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="fas fa-beer"></i>
+                <h1>Biergarten München</h1>
+                <p>Inicia sesión para continuar</p>
+            </div>
+            
+            <!-- Selector Cliente / Empleado -->
+            <div class="tipo-usuario-selector">
+                <button type="button" id="btnCliente" class="tipo-btn cliente active">
+                    <i class="fas fa-user"></i> Cliente
+                </button>
+                <button type="button" id="btnEmpleado" class="tipo-btn empleado">
+                    <i class="fas fa-user-tie"></i> Empleado
+                </button>
+            </div>
+            
+            <!-- Mensaje informativo según tipo -->
+            <div id="infoMensaje" class="info-cliente">
+                <i class="fas fa-info-circle"></i> Acceso a reservaciones, menú y promociones exclusivas.
+            </div>
+            
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Correo electrónico</label>
+                    <input type="email" id="loginEmail" required placeholder="tu@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Contraseña</label>
+                    <input type="password" id="loginPassword" required placeholder="••••••••">
+                </div>
+                
+                <button type="submit" class="btn-primary btn-auth" id="submitBtn">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+            </form>
+            
+            <div id="loginMessage" class="auth-message"></div>
+            
+            <div class="auth-footer" id="authFooter">
+                <p>¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a></p>
+                <p><a href="#" id="forgotPassword">¿Olvidaste tu contraseña?</a></p>
+            </div>
+            
+            <div class="auth-back">
+                <a href="index.html"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { auth, db } from './js/firebase-config.js';
+        import { signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        
+        // Elementos DOM
+        const form = document.getElementById('loginForm');
+        const messageDiv = document.getElementById('loginMessage');
+        const btnCliente = document.getElementById('btnCliente');
+        const btnEmpleado = document.getElementById('btnEmpleado');
+        const infoMensaje = document.getElementById('infoMensaje');
+        const submitBtn = document.getElementById('submitBtn');
+        const authFooter = document.getElementById('authFooter');
+        
+        // Variable para almacenar el tipo seleccionado
+        let tipoSeleccionado = 'cliente';
+        
+        // Eventos para selector de tipo
+        btnCliente.addEventListener('click', () => {
+            tipoSeleccionado = 'cliente';
+            btnCliente.classList.add('active');
+            btnEmpleado.classList.remove('active');
+            infoMensaje.className = 'info-cliente';
+            infoMensaje.innerHTML = '<i class="fas fa-info-circle"></i> Acceso a reservaciones, menú y promociones exclusivas.';
+            submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Iniciar Sesión como Cliente';
+            authFooter.innerHTML = `
+                <p>¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a></p>
+                <p><a href="#" id="forgotPassword">¿Olvidaste tu contraseña?</a></p>
+            `;
+            document.getElementById('forgotPassword')?.addEventListener('click', handleForgotPassword);
+        });
+        
+        btnEmpleado.addEventListener('click', () => {
+            tipoSeleccionado = 'empleado';
+            btnEmpleado.classList.add('active');
+            btnCliente.classList.remove('active');
+            infoMensaje.className = 'info-empleado';
+            infoMensaje.innerHTML = '<i class="fas fa-user-tie"></i> Acceso al panel de gestión: mesas, pedidos y facturación.';
+            submitBtn.innerHTML = '<i class="fas fa-user-tie"></i> Acceder al Panel de Empleado';
+            authFooter.innerHTML = `
+                <p><small>⚠️ Solo personal autorizado</small></p>
+                <p><a href="#" id="forgotPassword">¿Olvidaste tu contraseña?</a></p>
+            `;
+            document.getElementById('forgotPassword')?.addEventListener('click', handleForgotPassword);
+        });
+        
+        // Función para recuperar contraseña
+        async function handleForgotPassword(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            
+            if (!email) {
+                messageDiv.innerHTML = '<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> Ingresa tu correo electrónico primero</div>';
+                return;
+            }
+            
+            const result = await sendPasswordResetEmail(auth, email);
+            if (result) {
+                messageDiv.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle"></i> Revisa tu correo para restablecer tu contraseña</div>';
+            } else {
+                messageDiv.innerHTML = '<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> Error al enviar el correo</div>';
+            }
+        }
+        
+        // Manejo del formulario de login
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Iniciar sesión con Firebase Auth
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                // Obtener datos del usuario desde Firestore
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                const userData = userDoc.exists() ? userDoc.data() : null;
+                
+                if (tipoSeleccionado === 'cliente') {
+                    // Verificar que sea cliente (o no tenga rol definido)
+                    if (!userData || userData.rol === 'cliente' || userData.rol === undefined) {
+                        messageDiv.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle"></i> ¡Bienvenido! Redirigiendo...</div>';
+                        setTimeout(() => {
+                            window.location.href = 'pages/reservaciones.html';
+                        }, 1500);
+                    } else if (userData.rol === 'empleado') {
+                        messageDiv.innerHTML = '<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> Esta cuenta es de empleado. Usa el modo Empleado.</div>';
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    } else {
+                        messageDiv.innerHTML = '<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> Credenciales incorrectas</div>';
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                } 
+                else if (tipoSeleccionado === 'empleado') {
+                    // Verificar que sea empleado
+                    if (userData && userData.rol === 'empleado') {
+                        messageDiv.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle"></i> Acceso concedido. Redirigiendo al panel...</div>';
+                        setTimeout(() => {
+                            window.location.href = 'panel-empleado.html';
+                        }, 1500);
+                    } else {
+                        messageDiv.innerHTML = '<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> No tienes permisos de empleado. Contacta al administrador.</div>';
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                }
+                
+            } catch (error) {
+                console.error("Error en login:", error);
+                let mensaje = "Error al iniciar sesión";
+                if (error.code === 'auth/user-not-found') {
+                    mensaje = "Usuario no encontrado";
+                } else if (error.code === 'auth/wrong-password') {
+                    mensaje = "Contraseña incorrecta";
+                } else if (error.code === 'auth/invalid-email') {
+                    mensaje = "Correo electrónico inválido";
+                }
+                messageDiv.innerHTML = `<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> ${mensaje}</div>`;
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Event listener para recuperar contraseña inicial
+        document.getElementById('forgotPassword')?.addEventListener('click', handleForgotPassword);
+    </script>
+</body>
+</html>

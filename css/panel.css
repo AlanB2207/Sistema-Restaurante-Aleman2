@@ -1,0 +1,298 @@
+.panel-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .panel-header {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .panel-header h1 {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        .panel-header p {
+            color: #aaa;
+            margin: 0;
+            font-size: 0.8rem;
+        }
+        .empleado-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            color: white;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+        .stat-card i {
+            font-size: 2rem;
+            color: #c9a84c;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        .stat-card .label {
+            color: #6b6b6b;
+            font-size: 0.85rem;
+        }
+        .ventas-totales {
+            background: linear-gradient(135deg, #c9a84c, #b8933a);
+            color: #1a1a1a;
+        }
+        .ventas-totales .number {
+            color: #1a1a1a;
+            font-size: 2.5rem;
+        }
+        .mesas-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .mesa-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .mesa-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        .mesa-header {
+            background: #1a1a1a;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .mesa-header.ocupada {
+            background: #c62828;
+        }
+        .mesa-header.disponible {
+            background: #1a1a1a;
+        }
+        .mesa-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        .mesa-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .mesa-status.disponible {
+            background: #2e7d32;
+        }
+        .mesa-status.ocupada {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .mesa-body {
+            padding: 1rem;
+        }
+        .mesa-info {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .mesa-info p {
+            margin: 0;
+            font-size: 0.85rem;
+        }
+        .ticket-container {
+            background: #f9f6f0;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px dashed #c9a84c;
+        }
+        .ticket-items {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .ticket-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.8rem;
+            border-bottom: 1px solid #eee;
+        }
+        .ticket-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 2px solid #c9a84c;
+            font-weight: bold;
+        }
+        .mesa-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .btn-mesa {
+            flex: 1;
+            padding: 0.6rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-agregar {
+            background: #1a1a1a;
+            color: #c9a84c;
+        }
+        .btn-cerrar {
+            background: #b71c1c;
+            color: white;
+        }
+        .btn-liberar {
+            background: #1b5e20;
+            color: white;
+        }
+        .btn-agregar:hover, .btn-cerrar:hover, .btn-liberar:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 450px;
+            width: 90%;
+        }
+        .modal-content h3 {
+            margin-bottom: 1rem;
+        }
+        .modal-content select,
+        .modal-content input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0 1rem 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .modal-buttons button {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .logout-btn {
+            background: #b71c1c;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .empty-ticket {
+            text-align: center;
+            color: #999;
+            font-size: 0.8rem;
+            padding: 1rem;
+        }
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 0.5rem;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+        .fecha-actual {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 0.2rem;
+        }
+        .btn-actualizar {
+            background: #1565c0;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .mesa-card {
+            animation: fadeIn 0.3s ease;
+        }

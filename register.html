@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse - Biergarten München</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/registr.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Poppins:wght@300;400;500;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+   
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="fas fa-beer"></i>
+                <h1>Biergarten München</h1>
+                <p>Crea tu cuenta</p>
+            </div>
+            
+            <!-- Selector Cliente / Empleado en registro -->
+            <div class="toggle-registro">
+                <button type="button" id="regCliente" class="toggle-registro-btn active">
+                    <i class="fas fa-user"></i> Cliente
+                </button>
+                <button type="button" id="regEmpleado" class="toggle-registro-btn">
+                    <i class="fas fa-user-tie"></i> Empleado
+                </button>
+            </div>
+            
+            <form id="registroForm" class="auth-form">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Nombre completo</label>
+                    <input type="text" id="regNombre" required placeholder="Ej: Juan Pérez">
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-phone"></i> Teléfono</label>
+                    <input type="tel" id="regTelefono" required placeholder="55 1234 5678">
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Correo electrónico</label>
+                    <input type="email" id="regEmail" required placeholder="tu@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Contraseña</label>
+                    <input type="password" id="regPassword" required placeholder="Mínimo 6 caracteres">
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Confirmar contraseña</label>
+                    <input type="password" id="regConfirmPassword" required placeholder="Repite tu contraseña">
+                </div>
+                
+                <!-- Campo oculto para código de empleado (solo visible si selecciona empleado) -->
+                <div id="codigoEmpleadoDiv" class="codigo-empleado">
+                    <div class="form-group">
+                        <label><i class="fas fa-key"></i> Código de empleado</label>
+                        <input type="password" id="codigoEmpleado" placeholder="Ingresa el código de acceso">
+                        <small style="color: #666; display: block; margin-top: 0.3rem;">* Solo personal autorizado</small>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary btn-auth" id="registroBtn">
+                    <i class="fas fa-user-plus"></i> Registrarse
+                </button>
+            </form>
+            
+            <div id="registroMessage" class="auth-message"></div>
+            
+            <div class="auth-footer">
+                <p>¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+            </div>
+            
+            <div class="auth-back">
+                <a href="index.html"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { auth, db } from './js/firebase-config.js';
+        import { createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        
+        // Elementos DOM
+        const form = document.getElementById('registroForm');
+        const messageDiv = document.getElementById('registroMessage');
+        const regCliente = document.getElementById('regCliente');
+        const regEmpleado = document.getElementById('regEmpleado');
+        const codigoDiv = document.getElementById('codigoEmpleadoDiv');
+        const registroBtn = document.getElementById('registroBtn');
+        
+        let tipoRegistro = 'cliente';
+        const CODIGO_EMPLEADO = 'BIER2026'; // Código secreto para registrar empleados
+        
+        // Toggle entre cliente y empleado
+        regCliente.addEventListener('click', () => {
+            tipoRegistro = 'cliente';
+            regCliente.classList.add('active');
+            regEmpleado.classList.remove('active');
+            codigoDiv.classList.remove('visible');
+            registroBtn.innerHTML = '<i class="fas fa-user-plus"></i> Registrarse como Cliente';
+        });
+        
+        regEmpleado.addEventListener('click', () => {
+            tipoRegistro = 'empleado';
+            regEmpleado.classList.add('active');
+            regCliente.classList.remove('active');
+            codigoDiv.classList.add('visible');
+            registroBtn.innerHTML = '<i class="fas fa-user-tie"></i> Registrar como Empleado';
+        });
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('regNombre').value;
+            const telefono = document.getElementById('regTelefono').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            const codigoEmpleado = document.getElementById('codigoEmpleado').value;
+            
+            // Validaciones
+            if (password !== confirmPassword) {
+                messageDiv.innerHTML = '<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> Las contraseñas no coinciden</div>';
+                return;
+            }
+            
+            if (password.length < 6) {
+                messageDiv.innerHTML = '<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> La contraseña debe tener al menos 6 caracteres</div>';
+                return;
+            }
+            
+            // Validar código de empleado si es necesario
+            if (tipoRegistro === 'empleado' && codigoEmpleado !== CODIGO_EMPLEADO) {
+                messageDiv.innerHTML = '<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> Código de empleado incorrecto</div>';
+                return;
+            }
+            
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registrando...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Crear usuario en Firebase Auth
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                // Actualizar perfil con nombre
+                await updateProfile(user, { displayName: nombre });
+                
+                // Guardar en Firestore con rol correspondiente
+                await setDoc(doc(db, "users", user.uid), {
+                    uid: user.uid,
+                    nombre: nombre,
+                    email: email,
+                    telefono: telefono,
+                    fechaRegistro: new Date().toISOString(),
+                    rol: tipoRegistro, // 'cliente' o 'empleado'
+                    reservaciones: []
+                });
+                
+                messageDiv.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle"></i> ¡Registro exitoso! Redirigiendo...</div>';
+                
+                setTimeout(() => {
+                    if (tipoRegistro === 'empleado') {
+                        window.location.href = 'panel-empleado.html';
+                    } else {
+                        window.location.href = 'pages/reservaciones.html';
+                    }
+                }, 1500);
+                
+            } catch (error) {
+                console.error("Error en registro:", error);
+                let mensaje = "Error al registrarse";
+                if (error.code === 'auth/email-already-in-use') {
+                    mensaje = "Este correo ya está registrado";
+                } else if (error.code === 'auth/weak-password') {
+                    mensaje = "La contraseña debe tener al menos 6 caracteres";
+                }
+                messageDiv.innerHTML = `<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> ${mensaje}</div>`;
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

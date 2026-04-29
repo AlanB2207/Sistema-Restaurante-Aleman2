@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biergarten München | Auténtica Cocina Alemana</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍺</text></svg>">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-beer"></i>
+                <h1>Biergarten München</h1>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="pages/menu.html"><i class="fas fa-utensils"></i> Menu</a></li>
+                    <li><a href="pages/reservaciones.html"><i class="fas fa-calendar-check"></i> Reservaciones</a></li>
+                    <li><a href="pages/mesas.html"><i class="fas fa-chair"></i> Mesas</a></li>
+                    <li><a href="pages/contacto.html"><i class="fas fa-envelope"></i> Contactos</a></li>
+                    <li class="auth-links" id="authNav"></li>
+                </ul>
+            </nav>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="pages/menu.html"><i class="fas fa-utensils"></i>Menu</a></li>
+            <li><a href="pages/reservaciones.html"><i class="fas fa-calendar-check"></i>Reservaciones</a></li>
+            <li><a href="pages/mesas.html"><i class="fas fa-chair"></i> Mesas</a></li>
+            <li><a href="pages/contacto.html"><i class="fas fa-envelope"></i> Contactos</a></li>
+            <li id="mobileAuthNav"></li>
+        </ul>
+    </div>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>🇩🇪 SEIT 1856 🇩🇪</span>
+                </div>
+                <h2 class="animate-title">Willkommen bei</h2>
+                <h1 class="animate-title-delay">Biergarten München</h1>
+                <p class="animate-fade">Tradición bávara | Cerveza artesanal | Auténtica gastronomía alemana</p>
+                <div class="hero-buttons">
+                    <a href="pages/reservaciones.html" class="btn-primary"><i class="fas fa-calendar-alt"></i>Reservaciones</a>
+                    <a href="pages/menu.html" class="btn-secondary"><i class="fas fa-book-open"></i> Nuestro Menu</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="specials">
+            <div class="container">
+                <h2 class="section-title">Nuestras Especialidades</h2>
+                <div class="specials-grid">
+                    <div class="special-card">
+                        <i class="fas fa-drumstick-bite"></i>
+                        <h3>Schweinshaxe</h3>
+                        <p>Codillo de cerdo asado crujiente con salsa de cerveza negra y Knödel</p>
+                        <span class="special-price">$320</span>
+                    </div>
+                    <div class="special-card">
+                        <i class="fas fa-sausage"></i>
+                        <h3>Bratwurst Platte</h3>
+                        <p>Tres salchichas alemanas con chucrut y mostaza tradicional</p>
+                        <span class="special-price">$240</span>
+                    </div>
+                    <div class="special-card">
+                        <i class="fas fa-beer"></i>
+                        <h3>Weißbier</h3>
+                        <p>Cerveza de trigo bávara artesanal servida en jarra tradicional</p>
+                        <span class="special-price">$120</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2><i class="fas fa-landmark"></i> Gemütlichkeit</h2>
+                        <p>En Biergarten München, te ofrecemos una experiencia auténtica alemana. Nuestro ambiente cálido y acogedor, combinado con recetas tradicionales transmitidas por generaciones, te harán sentir como en Baviera.</p>
+                        <div class="features">
+                            <div><i class="fas fa-check-circle"></i> Cerveza importada</div>
+                            <div><i class="fas fa-check-circle"></i> Ingredientes originales</div>
+                            <div><i class="fas fa-check-circle"></i> Música en vivo</div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div class="german-flag"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <aside class="aside-info">
+            <div class="aside-card">
+                <i class="fas fa-clock"></i>
+                <h3>Horarios</h3>
+                <p><strong>Lun - Jue:</strong> 12:00 - 23:00</p>
+                <p><strong>Vie - Dom:</strong> 12:00 - 01:00</p>
+                <p><small>🍺 Mittagspause: 16:00 - 18:00</small></p>
+            </div>
+            <div class="aside-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>Nuestra Localizacion</h3>
+                <p>Calle de la Cerveza #42</p>
+                <p>Centro, Ciudad de México</p>
+                <p><i class="fas fa-subway"></i> Metro: Oktoberfest</p>
+            </div>
+            <div class="aside-card">
+                <i class="fas fa-phone"></i>
+                <h3>Telefono</h3>
+                <p>📞 +52 55 9876 5432</p>
+                <p>📱 +52 55 1234 5678</p>
+                <button class="btn-whatsapp" onclick="window.location.href='https://wa.me/525598765432'">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </button>
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3><i class="fas fa-beer"></i> Biergarten München</h3>
+                <p>Auténtica experiencia alemana desde 1856</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces Rapido</h3>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="pages/menu.html">Menu</a></li>
+                    <li><a href="pages/reservaciones.html">Reservaciones</a></li>
+                    <li><a href="pages/mesas.html">Mesas</a></li>
+                    <li><a href="pages/contacto.html">Contactos</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <form id="newsletterForm">
+                    <div class="newsletter-group">
+                        <input type="email" placeholder="Ihre E-Mail" required>
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </form>
+                <p style="margin-top: 1rem; font-size: 0.8rem;">Recibe ofertas especiales y eventos</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Biergarten München - <span>🍺 Prost! 🥨</span> - Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { auth, db } from './js/firebase-config.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        
+        // ============================================
+        // DATOS INICIALES DEL MENÚ ALEMÁN
+        // ============================================
+        
+        const initialMenu = [
+            // PLATOS PRINCIPALES (10)
+            { id: 1, nombre: "Schweinshaxe", categoria: "principales", precio: "$320", descripcion: "Codillo de cerdo asado crujiente con salsa de cerveza negra y Knödel", icono: "fa-drumstick-bite", tiempo: "25-30 min", aleman: "Schweinshaxe" },
+            { id: 2, nombre: "Bratwurst Platte", categoria: "principales", precio: "$240", descripcion: "Tres salchichas alemanas (Bratwurst, Currywurst, Weisswurst) con chucrut y mostaza", icono: "fa-sausage", tiempo: "15 min", aleman: "Bratwurst" },
+            { id: 3, nombre: "Sauerbraten", categoria: "principales", precio: "$290", descripcion: "Carne de res marinada en vinagre y especias, con salsa agridulce y Rotkohl", icono: "fa-utensils", tiempo: "20 min", aleman: "Sauerbraten" },
+            { id: 4, nombre: "Jägerschnitzel", categoria: "principales", precio: "$260", descripcion: "Filete de cerdo empanizado con salsa de champiñones y Spätzle", icono: "fa-leaf", tiempo: "20 min", aleman: "Jägerschnitzel" },
+            { id: 5, nombre: "Königsberger Klopse", categoria: "principales", precio: "$230", descripcion: "Albóndigas estilo Königsberg con alcaparras y puré de papas", icono: "fa-circle", tiempo: "25 min", aleman: "Klopse" },
+            { id: 6, nombre: "Rinderroulade", categoria: "principales", precio: "$310", descripcion: "Rollos de res rellenos de tocino, pepinillos y cebolla, con gravy", icono: "fa-scroll", tiempo: "30 min", aleman: "Rinderroulade" },
+            { id: 7, nombre: "Käsespätzle", categoria: "principales", precio: "$190", descripcion: "Pasta suaba con queso gratinado y cebolla caramelizada", icono: "fa-cheese", tiempo: "15 min", aleman: "Käsespätzle" },
+            { id: 8, nombre: "Eisbein", categoria: "principales", precio: "$280", descripcion: "Codillo de cerdo hervido con chucrut y puré de arvejas", icono: "fa-piggy-bank", tiempo: "25 min", aleman: "Eisbein" },
+            { id: 9, nombre: "Fischbrötchen", categoria: "principales", precio: "$210", descripcion: "Sándwich de pescado marinado con cebolla y salsa especial", icono: "fa-fish", tiempo: "10 min", aleman: "Fischbrötchen" },
+            { id: 10, nombre: "Maultaschen", categoria: "principales", precio: "$200", descripcion: "Pasta rellena de carne, espinacas y especias, servida en caldo", icono: "fa-square", tiempo: "20 min", aleman: "Maultaschen" },
+            
+            // BEBIDAS (5)
+            { id: 11, nombre: "Weißbier (0.5L)", categoria: "bebidas", precio: "$120", descripcion: "Cerveza de trigo bávara, servida en jarra tradicional", icono: "fa-beer", tiempo: "2 min", aleman: "Weißbier" },
+            { id: 12, nombre: "Dunkel Bier (0.5L)", categoria: "bebidas", precio: "$120", descripcion: "Cerveza oscura tostada, notas a caramelo y malta", icono: "fa-beer-mug", tiempo: "2 min", aleman: "Dunkel" },
+            { id: 13, nombre: "Radler", categoria: "bebidas", precio: "$100", descripcion: "Mezcla refrescante de cerveza con limonada", icono: "fa-lemon", tiempo: "2 min", aleman: "Radler" },
+            { id: 14, nombre: "Glühwein", categoria: "bebidas", precio: "$90", descripcion: "Vino caliente especiado con canela y clavo", icono: "fa-wine-glass", tiempo: "3 min", aleman: "Glühwein" },
+            { id: 15, nombre: "Apfelschorle", categoria: "bebidas", precio: "$60", descripcion: "Refresco alemán de jugo de manzana con agua mineral", icono: "fa-apple-alt", tiempo: "2 min", aleman: "Apfelschorle" },
+            
+            // POSTRES (5)
+            { id: 16, nombre: "Apfelstrudel", categoria: "postres", precio: "$110", descripcion: "Strudel de manzana con pasas y nueces, servido con crema inglesa", icono: "fa-apple-alt", tiempo: "10 min", aleman: "Apfelstrudel" },
+            { id: 17, nombre: "Schwarzwälder Kirschtorte", categoria: "postres", precio: "$130", descripcion: "Tarta Selva Negra: chocolate, cerezas y crema batida", icono: "fa-cake-candles", tiempo: "10 min", aleman: "Schwarzwälder" },
+            { id: 18, nombre: "Kaiserschmarrn", categoria: "postres", precio: "$120", descripcion: "Panqueque desmenuzado estilo emperador con compota de ciruela", icono: "fa-pancakes", tiempo: "15 min", aleman: "Kaiserschmarrn" },
+            { id: 19, nombre: "Bienenstich", categoria: "postres", precio: "$90", descripcion: "Pastel de almendras y crema de vainilla", icono: "fa-bee", tiempo: "10 min", aleman: "Bienenstich" },
+            { id: 20, nombre: "Bayerische Creme", categoria: "postres", precio: "$85", descripcion: "Crema bávara de vainilla con frutos rojos", icono: "fa-ice-cream", tiempo: "8 min", aleman: "Bayerische Creme" }
+        ];
+        
+        const initialTables = [
+            { id: 1, numero: 1, capacidad: 4, estado: "disponible", nombre: "Münchner Stube", icono: "fa-chair" },
+            { id: 2, numero: 2, capacidad: 6, estado: "disponible", nombre: "Bayern Halle", icono: "fa-chair" },
+            { id: 3, numero: 3, capacidad: 2, estado: "ocupada", nombre: "Romantische Ecke", icono: "fa-chair" },
+            { id: 4, numero: 4, capacidad: 8, estado: "disponible", nombre: "Oktoberfest Tisch", icono: "fa-chair" },
+            { id: 5, numero: 5, capacidad: 4, estado: "ocupada", nombre: "Biergarten", icono: "fa-chair" },
+            { id: 6, numero: 6, capacidad: 2, estado: "disponible", nombre: "Fensterplatz", icono: "fa-chair" },
+            { id: 7, numero: 7, capacidad: 10, estado: "disponible", nombre: "Königssaal", icono: "fa-chair" },
+            { id: 8, numero: 8, capacidad: 4, estado: "disponible", nombre: "Alpenblick", icono: "fa-chair" }
+        ];
+        
+        // Inicializar Firebase Data
+        async function initializeFirestoreData() {
+            try {
+                const menuSnapshot = await getDocs(collection(db, "menu"));
+                if (menuSnapshot.empty) {
+                    for (const item of initialMenu) {
+                        await addDoc(collection(db, "menu"), item);
+                    }
+                    console.log("🍻 Menú alemán inicializado!");
+                }
+                
+                const tablesSnapshot = await getDocs(collection(db, "tables"));
+                if (tablesSnapshot.empty) {
+                    for (const table of initialTables) {
+                        await addDoc(collection(db, "tables"), table);
+                    }
+                    console.log("🍺 Mesas inicializadas!");
+                }
+            } catch (error) {
+                console.error("Error inicializando datos:", error);
+            }
+        }
+        
+        initializeFirestoreData();
+        
+        // ============================================
+        // NEWSLETTER
+        // ============================================
+        
+        const newsletterForm = document.getElementById('newsletterForm');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const input = newsletterForm.querySelector('input[type="email"]');
+                const email = input?.value || '';
+                
+                if (!email) {
+                    alert('Ingresa tu correo electrónico');
+                    return;
+                }
+                
+                try {
+                    await addDoc(collection(db, "newsletter"), {
+                        email: email,
+                        timestamp: new Date().toISOString()
+                    });
+                    alert('🍺 ¡Suscripción exitosa! Recibirás nuestras ofertas. Prost!');
+                    input.value = '';
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert('Error al suscribirte. Intenta de nuevo.');
+                }
+            });
+        }
+        
+        // ============================================
+        // MENÚ HAMBURGUESA
+        // ============================================
+        
+        const hamburger = document.querySelector('.hamburger');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (hamburger && mobileMenu) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+            });
+            
+            document.querySelectorAll('.mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                });
+            });
+        }
+        
+        // ============================================
+        // AUTENTICACIÓN - NAVEGACIÓN
+        // ============================================
+        
+        const authNav = document.getElementById('authNav');
+        const mobileAuthNav = document.getElementById('mobileAuthNav');
+        
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuario logueado
+                const userName = user.displayName || user.email?.split('@')[0] || 'Usuario';
+                
+                const desktopHtml = `
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <a href="dashboard.html" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.2); padding: 0.3rem 1rem; border-radius: 25px;">
+                            <i class="fas fa-user-circle"></i> ${userName}
+                        </a>
+                        <button id="logoutHeaderBtn" style="background: var(--german-red); border: none; padding: 0.3rem 1rem; border-radius: 25px; color: white; cursor: pointer; transition: all 0.3s;">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                `;
+                
+                const mobileHtml = `
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem;">
+                        <a href="dashboard.html" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 25px;">
+                            <i class="fas fa-user-circle"></i> Mi Cuenta (${userName})
+                        </a>
+                        <button id="mobileLogoutBtn" style="background: var(--german-red); border: none; padding: 0.5rem 1rem; border-radius: 25px; color: white; cursor: pointer;">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </button>
+                    </div>
+                `;
+                
+                if (authNav) authNav.innerHTML = desktopHtml;
+                if (mobileAuthNav) mobileAuthNav.innerHTML = mobileHtml;
+                
+                // Event listeners para cerrar sesión
+                document.getElementById('logoutHeaderBtn')?.addEventListener('click', async () => {
+                    await signOut(auth);
+                    window.location.reload();
+                });
+                
+                document.getElementById('mobileLogoutBtn')?.addEventListener('click', async () => {
+                    await signOut(auth);
+                    window.location.reload();
+                });
+                
+            } else {
+                // Usuario no logueado
+                const desktopHtml = `
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a href="login.html" style="color: white; text-decoration: none; padding: 0.3rem 1rem; border-radius: 25px; transition: all 0.3s;">
+                            <i class="fas fa-sign-in-alt"></i> Iniciar secion
+                        </a>
+                        <a href="register.html" style="background: var(--german-gold); padding: 0.3rem 1rem; border-radius: 25px; color:white; text-decoration: none; transition: all 0.3s;">
+                            <i class="fas fa-user-plus"></i> Registrarse
+                        </a>
+                    </div>
+                `;
+                
+                const mobileHtml = `
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem;">
+                        <a href="login.html" style="color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 25px; text-align: center;">
+                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                        </a>
+                        <a href="register.html" style="background: var(--german-gold); padding: 0.5rem 1rem; border-radius: 25px; color:white; text-decoration: none; text-align: center;">
+                            <i class="fas fa-user-plus"></i> Registrarse
+                        </a>
+                    </div>
+                `;
+                
+                if (authNav) authNav.innerHTML = desktopHtml;
+                if (mobileAuthNav) mobileAuthNav.innerHTML = mobileHtml;
+            }
+        });
+        
+        console.log("🍺 Biergarten München - Sistema listo!");
+    </script>
+</body>
+</html>

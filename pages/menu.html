@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speisekarte - Biergarten München</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-beer"></i>
+                <h1>Biergarten München</h1>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="menu.html" class="active"><i class="fas fa-utensils"></i> Menu</a></li>
+                    <li><a href="reservaciones.html"><i class="fas fa-calendar-check"></i> Reservaciones</a></li>
+                    <li><a href="mesas.html"><i class="fas fa-chair"></i> Mesas</a></li>
+                    <li><a href="contacto.html"><i class="fas fa-envelope"></i> Contactos</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-menu">
+        <ul>
+            <li><a href="../index.html"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="menu.html"><i class="fas fa-utensils"></i> Menu</a></li>
+            <li><a href="reservaciones.html"><i class="fas fa-calendar-check"></i> Reservaciones</a></li>
+            <li><a href="mesas.html"><i class="fas fa-chair"></i> Mesas</a></li>
+            <li><a href="contacto.html"><i class="fas fa-envelope"></i> Contacto</a></li>
+        </ul>
+    </div>
+
+    <main>
+        <section class="menu-section">
+            <div class="hero-badge" style="display: inline-block; margin: 0 auto 1rem; text-align: center; width: fit-content;">
+                
+            </div>
+            <h2 class="section-title">Menú Tradicional Alemán</h2>
+            
+            <div class="menu-filters">
+                <button class="filter-btn active" data-category="all">🇩🇪 Todos</button>
+                <button class="filter-btn" data-category="principales">🍖 Platos Principales</button>
+                <button class="filter-btn" data-category="bebidas">🍺 Bebidas</button>
+                <button class="filter-btn" data-category="postres">🍰 Postres</button>
+            </div>
+            
+            <div id="menuContainer" class="menu-grid">
+                <div style="text-align: center; grid-column: 1/-1;">
+                    <i class="fas fa-beer fa-3x"></i>
+                    <p>Cargando nuestro delicioso menú...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3><i class="fas fa-beer"></i> Biergarten München</h3>
+                <p>Auténtica experiencia alemana desde 1856</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces Rapidos</h3>
+                <ul>
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="reservaciones.html">Reservaciones</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Horarios</h3>
+                <p>Lun - Jue: 12pm - 11pm</p>
+                <p>Vie - Dom: 12pm - 1am</p>
+                <p>🍺 Mittagspause: 4pm-6pm</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Biergarten München - <span>🍺 Prost! 🥨</span></p>
+        </div>
+    </footer>
+
+    <script type="module" src="../js/main.js"></script>
+</body>
+</html>

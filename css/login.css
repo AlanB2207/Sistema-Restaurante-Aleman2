@@ -1,0 +1,56 @@
+.tipo-usuario-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            background: var(--color-gray-lighter);
+            padding: 0.5rem;
+            border-radius: var(--border-radius-full);
+        }
+        .tipo-btn {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: var(--border-radius-full);
+            transition: var(--transition-fast);
+            font-family: var(--font-sans);
+        }
+        .tipo-btn.cliente {
+            color: var(--color-primary);
+        }
+        .tipo-btn.empleado {
+            color: var(--color-primary);
+        }
+        .tipo-btn.active {
+            background: #1a1a1a;
+            color: #c9a84c;
+        }
+        .tipo-btn.cliente.active {
+            background: #1a1a1a;
+        }
+        .tipo-btn.empleado.active {
+            background: #1b5e20;
+            color: white;
+        }
+        .info-empleado {
+            background: #e8f5e9;
+            border-left: 3px solid #2e7d32;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            color: #2e7d32;
+        }
+        .info-cliente {
+            background: #e3f2fd;
+            border-left: 3px solid #0288d1;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            color: #0288d1;
+        }
