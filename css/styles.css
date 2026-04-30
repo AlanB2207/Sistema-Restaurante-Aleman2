@@ -351,20 +351,22 @@ main {
 
 .btn-primary:hover {
     background: #a68232;
+    color: var(--color-white);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(184, 147, 58, 0.3);
 }
 
 .btn-secondary {
-    background: transparent;
+    background: #a68232;
     color: var(--color-primary);
     border: 1.5px solid var(--color-primary);
 }
 
 .btn-secondary:hover {
-    background: var(--color-primary);
+    background: #a68232;
     color: var(--color-white);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(184, 147, 58, 0.3);
 }
 
 /* Animaciones */
