@@ -197,5 +197,128 @@
         // Event listener para recuperar contraseña inicial
         document.getElementById('forgotPassword')?.addEventListener('click', handleForgotPassword);
     </script>
+
+    dime como agregar el codigo que me diste . 
+
+<!-- Traductor Google Mejorado -->
+<div id="translateContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+    <button id="translateBtn" style="background: #1a1a1a; border: 1px solid #c9a84c; padding: 12px 18px; border-radius: 50px; cursor: pointer; color: white; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: all 0.3s;">
+        <span style="font-size: 18px;">🌐</span>
+        <span>Traducir página</span>
+        <span style="font-size: 12px;">▼</span>
+    </button>
+    
+    <div id="languageMenu" style="display: none; position: absolute; bottom: 60px; right: 0; background: #1a1a1a; border: 1px solid #c9a84c; border-radius: 16px; padding: 10px; min-width: 180px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+            <button class="lang-option" data-lang="es" style="background: transparent; border: none; padding: 8px 12px; cursor: pointer; color: white; text-align: left; border-radius: 8px; display: flex; align-items: center; gap: 10px;">🇪🇸 Español</button>
+            <button class="lang-option" data-lang="en" style="background: transparent; border: none; padding: 8px 12px; cursor: pointer; color: white; text-align: left; border-radius: 8px; display: flex; align-items: center; gap: 10px;">🇺🇸 English</button>
+            <button class="lang-option" data-lang="de" style="background: transparent; border: none; padding: 8px 12px; cursor: pointer; color: white; text-align: left; border-radius: 8px; display: flex; align-items: center; gap: 10px;">🇩🇪 Deutsch</button>
+            <button class="lang-option" data-lang="fr" style="background: transparent; border: none; padding: 8px 12px; cursor: pointer; color: white; text-align: left; border-radius: 8px; display: flex; align-items: center; gap: 10px;">🇫🇷 Français</button>
+            <button class="lang-option" data-lang="it" style="background: transparent; border: none; padding: 8px 12px; cursor: pointer; color: white; text-align: left; border-radius: 8px; display: flex; align-items: center; gap: 10px;">🇮🇹 Italiano</button>
+            <button class="lang-option" data-lang="pt" style="background: transparent; border: none; padding: 8px 12px; cursor: pointer; color: white; text-align: left; border-radius: 8px; display: flex; align-items: center; gap: 10px;">🇵🇹 Português</button>
+            <button class="lang-option" data-lang="ja" style="background: transparent; border: none; padding: 8px 12px; cursor: pointer; color: white; text-align: left; border-radius: 8px; display: flex; align-items: center; gap: 10px;">🇯🇵 日本語</button>
+            <button class="lang-option" data-lang="zh-CN" style="background: transparent; border: none; padding: 8px 12px; cursor: pointer; color: white; text-align: left; border-radius: 8px; display: flex; align-items: center; gap: 10px;">🇨🇳 中文</button>
+            <hr style="margin: 5px 0; border-color: #333;">
+            <button id="resetLang" style="background: #c62828; border: none; padding: 8px 12px; cursor: pointer; color: white; text-align: center; border-radius: 8px; margin-top: 5px;">🔄 Mostrar original</button>
+        </div>
+    </div>
+</div>
+
+<div id="google_translate_element" style="display: none;"></div>
+
+<script>
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'es,en,de,fr,it,pt,ja,zh-CN',
+        autoDisplay: false
+    }, 'google_translate_element');
+}
+
+// Cargar Google Translate
+var script = document.createElement('script');
+script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+document.body.appendChild(script);
+
+// Mostrar/ocultar menú
+document.getElementById('translateBtn').onclick = function(e) {
+    e.stopPropagation();
+    var menu = document.getElementById('languageMenu');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+};
+
+// Cerrar menú al hacer clic fuera
+document.onclick = function() {
+    document.getElementById('languageMenu').style.display = 'none';
+};
+document.getElementById('translateContainer').onclick = function(e) {
+    e.stopPropagation();
+};
+
+// Cambiar idioma
+document.querySelectorAll('.lang-option').forEach(btn => {
+    btn.onclick = function() {
+        var lang = this.getAttribute('data-lang');
+        var select = document.querySelector('.goog-te-combo');
+        if (select) {
+            select.value = lang;
+            select.dispatchEvent(new Event('change'));
+        }
+        document.getElementById('languageMenu').style.display = 'none';
+        
+        // Guardar idioma seleccionado
+        localStorage.setItem('preferredLang', lang);
+    };
+});
+
+// Restablecer idioma original
+document.getElementById('resetLang').onclick = function() {
+    var select = document.querySelector('.goog-te-combo');
+    if (select) {
+        select.value = 'es';
+        select.dispatchEvent(new Event('change'));
+    }
+    document.getElementById('languageMenu').style.display = 'none';
+    localStorage.removeItem('preferredLang');
+};
+
+// Cargar último idioma seleccionado
+window.onload = function() {
+    var lastLang = localStorage.getItem('preferredLang');
+    if (lastLang && lastLang !== 'es') {
+        setTimeout(function() {
+            var select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = lastLang;
+                select.dispatchEvent(new Event('change'));
+            }
+        }, 1000);
+    }
+};
+</script>
+
+<style>
+/* Ocultar banner de Google */
+.goog-te-banner-frame { display: none !important; }
+body { top: 0 !important; }
+.skiptranslate { display: none !important; }
+
+/* Hover en opciones */
+.lang-option:hover {
+    background: #c9a84c !important;
+    color: #1a1a1a !important;
+}
+
+/* Animación del botón */
+#translateBtn:hover {
+    transform: translateY(-2px);
+    background: #c9a84c;
+    color: #1a1a1a;
+}
+
+#translateBtn:hover span:first-child {
+    transform: scale(1.1);
+}
+</style>
 </body>
 </html>
